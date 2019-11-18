@@ -95,6 +95,7 @@ public class SerealizeClass implements SuperEncoder {
         classesFields.add(javaBean.getClass().getTypeName());
         Node element1;
         Node element2;
+        Node element3;
         String firstClassName;
         String methodName;
         String objectName;
@@ -109,11 +110,12 @@ public class SerealizeClass implements SuperEncoder {
             attributes = n.getAttributes();
             element1 = attributes.getNamedItem("class");
             element2 = attributes.getNamedItem("type");
+            element3 = attributes.getNamedItem("value");
             methodName = "set" + firstUpperCase(n.getNodeName());
             if ("primitive".equals(element1.getNodeValue())) {
                 primitive = Class.forName(getWrapperClassName(element2.getNodeValue()));
                 javaBean.getClass().
-                        getDeclaredMethod(methodName, (Class) primitive.getField("TYPE").get(null)).invoke(javaBean, 5);
+                        getDeclaredMethod(methodName, (Class) primitive.getField("TYPE").get(null)).invoke(javaBean, Integer.valueOf(element3.getNodeValue()));
                 firstClassName = classesFields.iterator().next();
                 this.classesFields.clear();
                 this.classesFields.add(firstClassName);
